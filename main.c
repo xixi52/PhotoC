@@ -28,7 +28,8 @@ int main() {
         printf("4. Appliquer un effet de miroir\n");
         printf("5. Appliquer une rotation\n");
         printf("6. Appliquer une translation\n");
-        printf("7. Quitter\n");
+        printf("7. Appliquer un effet de pixelisation\n");
+        printf("8. Quitter\n");
         printf("Entrez votre choix : ");
         scanf("%d", &choice);
 
@@ -166,6 +167,35 @@ int main() {
                 break;
 
             case 7:
+                if (colorOutputImage != NULL) {
+                    int pixelizeIntensity;
+                    printf("Entrez l'intensité de pixelisation (1-10) : ");
+                    scanf("%d", &pixelizeIntensity);
+
+                    if (pixelizeIntensity >= 1 && pixelizeIntensity <= 10) {
+                        colorOutputImage = pixelizeImageColor(colorOutputImage, pixelizeIntensity);
+                        printf("Pixelisation couleur appliquée avec succès.\n");
+                    } else {
+                        fprintf(stderr, "L'intensité de pixelisation doit être comprise entre 1 et 10.\n");
+                    }
+                } else if (grayOutputImage != NULL) {
+                    int pixelizeIntensity;
+                    printf("Entrez l'intensité de pixelisation (1-10) : ");
+                    scanf("%d", &pixelizeIntensity);
+
+                    if (pixelizeIntensity >= 1 && pixelizeIntensity <= 10) {
+                        grayOutputImage = pixelizeImage(grayOutputImage, pixelizeIntensity);
+                        printf("Pixelisation noir et blanc appliquée avec succès.\n");
+                    } else {
+                        fprintf(stderr, "L'intensité de pixelisation doit être comprise entre 1 et 10.\n");
+                    }
+                } else {
+                    fprintf(stderr, "Aucune image chargée pour appliquer la pixelisation.\n");
+                }
+                break;
+
+
+            case 8:
                 // Quitter le programme
                 break;
 
@@ -174,7 +204,7 @@ int main() {
                 break;
         }
 
-    } while (choice != 7);
+    } while (choice != 8);
 
     // Libérer la mémoire
     if (graySourceImage != NULL) {

@@ -483,3 +483,79 @@ ColorImage* translateImageColor(ColorImage* image, const char direction, int pix
 
     return result;
 }
+
+// Fonction pour appliquer un effet de pixelisation sur une image en niveaux de gris
+GrayImage* pixelizeImage(GrayImage* image, int intensity) {
+    GrayImage* result = (GrayImage*)malloc(sizeof(GrayImage));
+    result->width = image->width;
+    result->height = image->height;
+    result->data = (unsigned char*)malloc(image->width * image->height * sizeof(unsigned char));
+
+    int blockSize = intensity;
+
+    for (int y = 0; y < image->height; y += blockSize) {
+        for (int x = 0; x < image->width; x += blockSize) {
+            int sum = 0;
+            int count = 0;
+
+            for (int i = 0; i < blockSize && y + i < image->height; ++i) {
+                for (int j = 0; j < blockSize && x + j < image->width; ++j) {
+                    sum += image->data[(y + i) * image->width + x + j];
+                    ++count;
+                }
+            }
+
+            int average = (count > 0) ? sum / count : 0;
+
+            for (int i = 0; i < blockSize && y + i < image->height; ++i) {
+                for (int j = 0; j < blockSize && x + j < image->width; ++j) {
+                    result->data[(y + i) * image->width + x + j] = average;
+                }
+            }
+        }
+    }
+
+    return result;
+}
+
+// Fonction pour appliquer un effet de pixelisation sur une image en couleur
+ColorImage* pixelizeImageColor(ColorImage* image, int intensity) {
+    ColorImage* result = (ColorImage*)malloc(sizeof(ColorImage));
+    result->width = image->width;
+    result->height = image->height;
+    result->r = (unsigned char*)malloc(image->width * image->height * sizeof(unsigned char));
+    result->g = (unsigned char*)malloc(image->width * image->height * sizeof(unsigned char));
+    result->b = (unsigned char*)malloc(image->width * image->height * sizeof(unsigned char));
+
+    int blockSize = intensity;
+
+    for (int y = 0; y < image->height; y += blockSize) {
+        for (int x = 0; x < image->width; x += blockSize) {
+            int sumR = 0, sumG = 0, sumB = 0;
+            int count = 0;
+
+            for (int i = 0; i < blockSize && y + i < image->height; ++i) {
+                for (int j = 0; j < blockSize && x + j < image->width; ++j) {
+                    sumR += image->r[(y + i) * image->width + x + j];
+                    sumG += image->g[(y + i) * image->width + x + j];
+                    sumB += image->b[(y + i) * image->width + x + j];
+                    ++count;
+                }
+            }
+
+            int averageR = (count > 0) ? sumR / count : 0;
+            int averageG = (count > 0) ? sumG / count : 0;
+            int averageB = (count > 0) ? sumB / count : 0;
+
+            for (int i = 0; i < blockSize && y + i < image->height; ++i) {
+                for (int j = 0; j < blockSize && x + j < image->width; ++j) {
+                    result->r[(y + i) * image->width + x + j] = averageR;
+                    result->g[(y + i) * image->width + x + j] = averageG;
+                    result->b[(y + i) * image->width + x + j] = averageB;
+                }
+            }
+        }
+    }
+
+    return result;
+}
