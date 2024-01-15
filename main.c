@@ -16,6 +16,8 @@ int main() {
     char outputFileName[100];
 
     int choice;
+    char direction;
+    int pixels;
 
     // Menu principal
     do {
@@ -25,7 +27,8 @@ int main() {
         printf("3. Appliquer un effet de flou\n");
         printf("4. Appliquer un effet de miroir\n");
         printf("5. Appliquer une rotation\n");
-        printf("6. Quitter\n");
+        printf("6. Appliquer une translation\n");
+        printf("7. Quitter\n");
         printf("Entrez votre choix : ");
         scanf("%d", &choice);
 
@@ -142,6 +145,27 @@ int main() {
                 break;
 
             case 6:
+                // Translater les pixels
+                if (grayOutputImage != NULL) {
+                    printf("Entrez la direction de la translation (H/B/G/D) : ");
+                    scanf(" %c", &direction);
+                    printf("Entrez le nombre de pixels à déplacer : ");
+                    scanf("%d", &pixels);
+                    grayOutputImage = translateImage(grayOutputImage, direction, pixels);
+                    printf("Pixels translater avec succès.\n");
+                } else if (colorOutputImage != NULL) {
+                    printf("Entrez la direction de la translation (H/B/G/D) : ");
+                    scanf(" %c", &direction);
+                    printf("Entrez le nombre de pixels à déplacer : ");
+                    scanf("%d", &pixels);
+                    colorOutputImage = translateImageColor(colorOutputImage, direction, pixels);
+                    printf("Pixels translater avec succès.\n");
+                } else {
+                    fprintf(stderr, "Aucune image chargée pour translater les pixels.\n");
+                }
+                break;
+
+            case 7:
                 // Quitter le programme
                 break;
 
@@ -150,7 +174,7 @@ int main() {
                 break;
         }
 
-    } while (choice != 6);
+    } while (choice != 7);
 
     // Libérer la mémoire
     if (graySourceImage != NULL) {

@@ -375,3 +375,111 @@ ColorImage* rotateAndResizeImageColor(ColorImage* image, double angle) {
 
     return result;
 }
+
+// Fonction pour appliquer un effet de translation sur une image en niveaux de gris
+GrayImage* translateImage(GrayImage* image, const char direction, int pixels) {
+    GrayImage* result = (GrayImage*)malloc(sizeof(GrayImage));
+    result->width = image->width;
+    result->height = image->height;
+    result->data = (unsigned char*)malloc(image->width * image->height * sizeof(unsigned char));
+
+    memcpy(result->data, image->data, image->width * image->height);
+
+    int size = image->width * image->height;
+    int step = pixels % image->height;
+
+    switch (direction) {
+        case 'H': // Haut
+            for (int i = 0; i < size; ++i) {
+                result->data[i] = image->data[(i + step * image->width) % size];
+            }
+            break;
+        case 'B': // Bas
+            for (int i = 0; i < size; ++i) {
+                result->data[i] = image->data[(i - step * image->width + size) % size];
+            }
+            break;
+        case 'G': // Gauche
+            for (int y = 0; y < image->height; ++y) {
+                for (int x = 0; x < image->width; ++x) {
+                    result->data[y * image->width + x] = image->data[y * image->width + (x + step) % image->width];
+                }
+            }
+            break;
+        case 'D': // Droite
+            for (int y = 0; y < image->height; ++y) {
+                for (int x = 0; x < image->width; ++x) {
+                    result->data[y * image->width + x] = image->data[y * image->width + (x - step + image->width) % image->width];
+                }
+            }
+            break;
+        default:
+            fprintf(stderr, "Direction non valide.\n");
+            free(result->data);
+            free(result);
+            return NULL;
+    }
+
+    return result;
+}
+
+// Fonction pour appliquer un effet de translation sur une image en couleur
+ColorImage* translateImageColor(ColorImage* image, const char direction, int pixels) {
+    ColorImage* result = (ColorImage*)malloc(sizeof(ColorImage));
+    result->width = image->width;
+    result->height = image->height;
+    result->r = (unsigned char*)malloc(image->width * image->height * sizeof(unsigned char));
+    result->g = (unsigned char*)malloc(image->width * image->height * sizeof(unsigned char));
+    result->b = (unsigned char*)malloc(image->width * image->height * sizeof(unsigned char));
+
+    memcpy(result->r, image->r, image->width * image->height);
+    memcpy(result->g, image->g, image->width * image->height);
+    memcpy(result->b, image->b, image->width * image->height);
+
+    int size = image->width * image->height;
+    int step = pixels % image->height;
+
+    switch (direction) {
+        case 'H': // Haut
+            for (int i = 0; i < size; ++i) {
+                result->r[i] = image->r[(i + step * image->width) % size];
+                result->g[i] = image->g[(i + step * image->width) % size];
+                result->b[i] = image->b[(i + step * image->width) % size];
+            }
+            break;
+        case 'B': // Bas
+            for (int i = 0; i < size; ++i) {
+                result->r[i] = image->r[(i - step * image->width + size) % size];
+                result->g[i] = image->g[(i - step * image->width + size) % size];
+                result->b[i] = image->b[(i - step * image->width + size) % size];
+            }
+            break;
+        case 'G': // Gauche
+            for (int y = 0; y < image->height; ++y) {
+                for (int x = 0; x < image->width; ++x) {
+                    result->r[y * image->width + x] = image->r[y * image->width + (x + step) % image->width];
+                    result->g[y * image->width + x] = image->g[y * image->width + (x + step) % image->width];
+                    result->b[y * image->width + x] = image->b[y * image->width + (x + step) % image->width];
+                }
+            }
+            break;
+        case 'D': // Droite
+            for (int y = 0; y < image->height; ++y) {
+                for (int x = 0; x < image->width; ++x) {
+                    result->r[y * image->width + x] = image->r[y * image->width + (x - step + image->width) % image->width];
+                    result->g[y * image->width + x] = image->g[y * image->width + (x - step + image->width) % image->width];
+                    result->b[y * image->width + x] = image->b[y * image->width + (x - step + image->width) % image->width];
+                }
+            }
+            break;
+        default:
+            fprintf(stderr, "Direction non valide.\n");
+            free(result->r);
+            free(result->g);
+            free(result->b);
+            free(result);
+            return NULL;
+    }
+
+    return result;
+}
