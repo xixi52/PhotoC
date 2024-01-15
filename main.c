@@ -19,6 +19,7 @@ int main() {
     char direction;
     int pixels;
     double contrastIntensity;
+    int brightnessDelta;
 
     // Menu principal
     do {
@@ -32,7 +33,8 @@ int main() {
         printf("7. Appliquer un effet de pixelisation\n");
         printf("8. Appliquer un effet de negatif\n");
         printf("9. Modifier le contraste\n");
-        printf("10. Quitter\n");
+        printf("10. Modifier la luminosité\n");
+        printf("11. Quitter\n");
         printf("Entrez votre choix : ");
         scanf("%d", &choice);
 
@@ -229,6 +231,25 @@ int main() {
                 break;
 
             case 10:
+                printf("Entrez la valeur d'ajustement de luminosité (-255 à 255) : ");
+                scanf("%d", &brightnessDelta);
+
+                if (brightnessDelta >= -255 && brightnessDelta <= 255) {
+                    if (grayOutputImage != NULL) {
+                        grayOutputImage = adjustBrightness(grayOutputImage, brightnessDelta);
+                        printf("Luminosité ajustée avec succès (PGM).\n");
+                    } else if (colorOutputImage != NULL) {
+                        colorOutputImage = adjustBrightnessColor(colorOutputImage, brightnessDelta);
+                        printf("Luminosité ajustée avec succès (PPM).\n");
+                    } else {
+                        fprintf(stderr, "Aucune image chargée pour ajuster la luminosité.\n");
+                    }
+                } else {
+                    fprintf(stderr, "La valeur d'ajustement de luminosité doit être entre -255 et 255.\n");
+                }
+                break;
+
+            case 11:
                 // Quitter le programme
                 break;
 
@@ -237,7 +258,7 @@ int main() {
                 break;
         }
 
-    } while (choice != 10);
+    } while (choice != 11);
 
     // Libérer la mémoire
     if (graySourceImage != NULL) {

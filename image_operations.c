@@ -630,3 +630,42 @@ ColorImage* adjustContrastColor(ColorImage* image, double intensity) {
 
     return result;
 }
+
+// Fonction pour ajuster la luminosité d'une image en niveaux de gris
+GrayImage* adjustBrightness(GrayImage* image, int delta) {
+    GrayImage* result = (GrayImage*)malloc(sizeof(GrayImage));
+    result->width = image->width;
+    result->height = image->height;
+    result->data = (unsigned char*)malloc(image->width * image->height * sizeof(unsigned char));
+
+    // Appliquer l'ajustement de luminosité pixel par pixel
+    for (int i = 0; i < image->width * image->height; ++i) {
+        int adjustedValue = image->data[i] + delta;
+        result->data[i] = (unsigned char)fmin(fmax(adjustedValue, 0), 255);
+    }
+
+    return result;
+}
+
+// Fonction pour ajuster la luminosité d'une image en couleur
+ColorImage* adjustBrightnessColor(ColorImage* image, int delta) {
+    ColorImage* result = (ColorImage*)malloc(sizeof(ColorImage));
+    result->width = image->width;
+    result->height = image->height;
+    result->r = (unsigned char*)malloc(image->width * image->height * sizeof(unsigned char));
+    result->g = (unsigned char*)malloc(image->width * image->height * sizeof(unsigned char));
+    result->b = (unsigned char*)malloc(image->width * image->height * sizeof(unsigned char));
+
+    // Appliquer l'ajustement de luminosité canal par canal
+    for (int i = 0; i < image->width * image->height; ++i) {
+        int adjustedR = image->r[i] + delta;
+        int adjustedG = image->g[i] + delta;
+        int adjustedB = image->b[i] + delta;
+
+        result->r[i] = (unsigned char)fmin(fmax(adjustedR, 0), 255);
+        result->g[i] = (unsigned char)fmin(fmax(adjustedG, 0), 255);
+        result->b[i] = (unsigned char)fmin(fmax(adjustedB, 0), 255);
+    }
+
+    return result;
+}
