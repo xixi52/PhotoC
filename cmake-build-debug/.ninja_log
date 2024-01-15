@@ -1,0 +1,5 @@
+# ninja log v5
+2	132	7270306793560877	build.ninja	9b1fabd4f4d7f55
+1	65	7270306794974998	CMakeFiles/PhotoC.dir/main.c.obj	c3d80297f8e99989
+3	70	7270306795027909	CMakeFiles/PhotoC.dir/image_operations.c.obj	5429793507104466
+71	170	7270306795999896	PhotoC.exe	76e8b477eecfd240
