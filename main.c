@@ -23,7 +23,8 @@ int main() {
         printf("1. Charger une image\n");
         printf("2. Enregistrer une image\n");
         printf("3. Appliquer un effet de flou\n");
-        printf("4. Quitter\n");
+        printf("4. Appliquer un effet de miroir\n");
+        printf("5. Quitter\n");
         printf("Entrez votre choix : ");
         scanf("%d", &choice);
 
@@ -97,6 +98,31 @@ int main() {
                 break;
 
             case 4:
+                if (grayOutputImage != NULL || colorOutputImage != NULL) {
+                    int mirrorDirection;
+                    printf("Choisissez la direction de l'effet miroir :\n");
+                    printf("1. Horizontal\n");
+                    printf("2. Vertical\n");
+                    printf("Entrez votre choix : ");
+                    scanf("%d", &mirrorDirection);
+
+                    if (mirrorDirection < 1 || mirrorDirection > 2) {
+                        fprintf(stderr, "Direction non valide pour l'effet miroir.\n");
+                    } else {
+                        if (grayOutputImage != NULL) {
+                            grayOutputImage = applyMirror(grayOutputImage, mirrorDirection);
+                            printf("Effet miroir appliqué avec succès.\n");
+                        } else if (colorOutputImage != NULL) {
+                            colorOutputImage = applyMirrorColor(colorOutputImage, mirrorDirection);
+                            printf("Effet miroir appliqué avec succès.\n");
+                        }
+                    }
+                } else {
+                    fprintf(stderr, "Aucune image chargée pour appliquer l'effet miroir.\n");
+                }
+                break;
+
+            case 5:
                 // Quitter le programme
                 break;
 
@@ -105,7 +131,7 @@ int main() {
                 break;
         }
 
-    } while (choice != 4);
+    } while (choice != 5);
 
     // Libérer la mémoire
     if (graySourceImage != NULL) {

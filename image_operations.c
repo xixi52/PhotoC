@@ -187,3 +187,69 @@ ColorImage* applyBlurColor(ColorImage* image, int intensity) {
 
     return result;
 }
+
+// Fonction pour appliquer un effet miroir sur une image en niveaux de gris
+GrayImage* applyMirror(GrayImage* image, int direction) {
+    GrayImage* result = (GrayImage*)malloc(sizeof(GrayImage));
+    result->width = image->width;
+    result->height = image->height;
+    result->data = (unsigned char*)malloc(image->width * image->height * sizeof(unsigned char));
+
+    if (direction == 1) { // Miroir horizontal
+        for (int y = 0; y < image->height; ++y) {
+            for (int x = 0; x < image->width; ++x) {
+                result->data[y * image->width + x] = image->data[y * image->width + (image->width - 1 - x)];
+            }
+        }
+    } else if (direction == 2) { // Miroir vertical
+        for (int y = 0; y < image->height; ++y) {
+            for (int x = 0; x < image->width; ++x) {
+                result->data[y * image->width + x] = image->data[(image->height - 1 - y) * image->width + x];
+            }
+        }
+    } else {
+        fprintf(stderr, "Direction non valide pour l'effet miroir.\n");
+        free(result->data);
+        free(result);
+        return NULL;
+    }
+
+    return result;
+}
+
+// Fonction pour appliquer un effet miroir sur une image en couleur
+ColorImage* applyMirrorColor(ColorImage* image, int direction) {
+    ColorImage* result = (ColorImage*)malloc(sizeof(ColorImage));
+    result->width = image->width;
+    result->height = image->height;
+    result->r = (unsigned char*)malloc(image->width * image->height * sizeof(unsigned char));
+    result->g = (unsigned char*)malloc(image->width * image->height * sizeof(unsigned char));
+    result->b = (unsigned char*)malloc(image->width * image->height * sizeof(unsigned char));
+
+    if (direction == 1) { // Miroir horizontal
+        for (int y = 0; y < image->height; ++y) {
+            for (int x = 0; x < image->width; ++x) {
+                result->r[y * image->width + x] = image->r[y * image->width + (image->width - 1 - x)];
+                result->g[y * image->width + x] = image->g[y * image->width + (image->width - 1 - x)];
+                result->b[y * image->width + x] = image->b[y * image->width + (image->width - 1 - x)];
+            }
+        }
+    } else if (direction == 2) { // Miroir vertical
+        for (int y = 0; y < image->height; ++y) {
+            for (int x = 0; x < image->width; ++x) {
+                result->r[y * image->width + x] = image->r[(image->height - 1 - y) * image->width + x];
+                result->g[y * image->width + x] = image->g[(image->height - 1 - y) * image->width + x];
+                result->b[y * image->width + x] = image->b[(image->height - 1 - y) * image->width + x];
+            }
+        }
+    } else {
+        fprintf(stderr, "Direction non valide pour l'effet miroir.\n");
+        free(result->r);
+        free(result->g);
+        free(result->b);
+        free(result);
+        return NULL;
+    }
+
+    return result;
+}
