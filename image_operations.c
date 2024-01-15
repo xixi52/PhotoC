@@ -128,3 +128,62 @@ void savePPM(const char* filename, ColorImage* image) {
 
     fclose(file);
 }
+
+// Fonction pour appliquer un flou sur une image en niveaux de gris
+GrayImage* applyBlur(GrayImage* image, int intensity) {
+    GrayImage* result = (GrayImage*)malloc(sizeof(GrayImage));
+    result->width = image->width;
+    result->height = image->height;
+    result->data = (unsigned char*)malloc(image->width * image->height * sizeof(unsigned char));
+
+    // Appliquer un flou moyenne pondéré en fonction de l'intensité
+    for (int y = 1; y < image->height - 1; ++y) {
+        for (int x = 1; x < image->width - 1; ++x) {
+            int sum = 0;
+            int divisor = (2 * intensity + 1) * (2 * intensity + 1);
+
+            for (int i = -intensity; i <= intensity; ++i) {
+                for (int j = -intensity; j <= intensity; ++j) {
+                    if((y + i) * image->width + x + j < 0) continue;
+                    sum += image->data[(y + i) * image->width + x + j];
+                }
+            }
+            result->data[y * image->width + x] = sum / divisor;
+        }
+    }
+
+    return result;
+}
+
+// Fonction pour appliquer un flou sur une image en couleur
+ColorImage* applyBlurColor(ColorImage* image, int intensity) {
+
+    ColorImage* result = (ColorImage*)malloc(sizeof(ColorImage));
+    result->width = image->width;
+    result->height = image->height;
+    result->r = (unsigned char*)malloc(image->width * image->height * sizeof(unsigned char));
+    result->g = (unsigned char*)malloc(image->width * image->height * sizeof(unsigned char));
+    result->b = (unsigned char*)malloc(image->width * image->height * sizeof(unsigned char));
+
+    // Appliquer un flou moyenne pondéré en fonction de l'intensité pour chaque canal de couleur
+    for (int y = 1; y < image->height - 1; ++y) {
+        for (int x = 1; x < image->width - 1; ++x) {
+            int sumR = 0, sumG = 0, sumB = 0;
+            int divisor = (2 * intensity + 1) * (2 * intensity + 1);
+
+            for (int i = -intensity; i <= intensity; ++i) {
+                for (int j = -intensity; j <= intensity; ++j) {
+                    if ((y + i) * image->width + x + j < 0) continue;
+                    sumR += image->r[(y + i) * image->width + x + j];
+                    sumG += image->g[(y + i) * image->width + x + j];
+                    sumB += image->b[(y + i) * image->width + x + j];
+                }
+            }
+            result->r[y * image->width + x] = sumR / divisor;
+            result->g[y * image->width + x] = sumG / divisor;
+            result->b[y * image->width + x] = sumB / divisor;
+        }
+    }
+
+    return result;
+}

@@ -25,9 +25,11 @@ typedef struct {
 
 GrayImage* openPGM(const char* filename);
 void savePGM(const char* filename, GrayImage* image);
+GrayImage* applyBlur(GrayImage* image, int intensity);
 
 ColorImage* openPPM(const char* filename);
 void savePPM(const char* filename, ColorImage* image);
+ColorImage* applyBlurColor(ColorImage* image, int intensity);
 
 ImageType detectImageType(const char* filename);
 

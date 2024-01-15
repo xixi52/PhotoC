@@ -22,7 +22,8 @@ int main() {
         printf("\nMenu Principal:\n");
         printf("1. Charger une image\n");
         printf("2. Enregistrer une image\n");
-        printf("3. Quitter\n");
+        printf("3. Appliquer un effet de flou\n");
+        printf("4. Quitter\n");
         printf("Entrez votre choix : ");
         scanf("%d", &choice);
 
@@ -74,6 +75,28 @@ int main() {
                 break;
 
             case 3:
+                if (grayOutputImage != NULL || colorOutputImage != NULL) {
+                    int blurIntensity;
+                    printf("Entrez l'intensité du flou (1-10) : ");
+                    scanf("%d", &blurIntensity);
+
+                    if (blurIntensity < 1 || blurIntensity > 10) {
+                        fprintf(stderr, "L'intensité du flou doit être comprise entre 1 et 10.\n");
+                    } else {
+                        if (grayOutputImage != NULL) {
+                            grayOutputImage = applyBlur(grayOutputImage, blurIntensity);
+                            printf("Effet de flou appliqué avec succès.\n");
+                        } else if (colorOutputImage != NULL) {
+                            colorOutputImage = applyBlurColor(colorOutputImage, blurIntensity);
+                            printf("Effet de flou appliqué avec succès.\n");
+                        }
+                    }
+                } else {
+                    fprintf(stderr, "Aucune image chargée pour appliquer l'effet de flou.\n");
+                }
+                break;
+
+            case 4:
                 // Quitter le programme
                 break;
 
@@ -82,7 +105,7 @@ int main() {
                 break;
         }
 
-    } while (choice != 7);
+    } while (choice != 4);
 
     // Libérer la mémoire
     if (graySourceImage != NULL) {
