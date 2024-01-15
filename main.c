@@ -18,6 +18,7 @@ int main() {
     int choice;
     char direction;
     int pixels;
+    double contrastIntensity;
 
     // Menu principal
     do {
@@ -30,7 +31,8 @@ int main() {
         printf("6. Appliquer une translation\n");
         printf("7. Appliquer un effet de pixelisation\n");
         printf("8. Appliquer un effet de negatif\n");
-        printf("9. Quitter\n");
+        printf("9. Modifier le contraste\n");
+        printf("10. Quitter\n");
         printf("Entrez votre choix : ");
         scanf("%d", &choice);
 
@@ -208,6 +210,25 @@ int main() {
                 break;
 
             case 9:
+                printf("Entrez l'intensité de contraste (0.1-2.0) : ");
+                scanf("%lf", &contrastIntensity);
+
+                if (contrastIntensity >= 0.1 && contrastIntensity <= 2.0) {
+                    if (grayOutputImage != NULL) {
+                        grayOutputImage = adjustContrast(grayOutputImage, contrastIntensity);
+                        printf("Contraste ajusté avec succès (PGM).\n");
+                    } else if (colorOutputImage != NULL) {
+                        colorOutputImage = adjustContrastColor(colorOutputImage, contrastIntensity);
+                        printf("Contraste ajusté avec succès (PPM).\n");
+                    } else {
+                        fprintf(stderr, "Aucune image chargée pour ajuster le contraste.\n");
+                    }
+                } else {
+                    fprintf(stderr, "L'intensité de contraste doit être comprise entre 0.1 et 2.0.\n");
+                }
+                break;
+
+            case 10:
                 // Quitter le programme
                 break;
 
@@ -216,7 +237,7 @@ int main() {
                 break;
         }
 
-    } while (choice != 9);
+    } while (choice != 10);
 
     // Libérer la mémoire
     if (graySourceImage != NULL) {

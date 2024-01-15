@@ -592,3 +592,41 @@ ColorImage* applyNegativeColor(ColorImage* image) {
     return result;
 }
 
+// Fonction pour ajuster le contraste d'une image en niveaux de gris
+GrayImage* adjustContrast(GrayImage* image, double intensity) {
+    GrayImage* result = (GrayImage*)malloc(sizeof(GrayImage));
+    result->width = image->width;
+    result->height = image->height;
+    result->data = (unsigned char*)malloc(image->width * image->height * sizeof(unsigned char));
+
+    // Appliquer l'ajustement de contraste pixel par pixel
+    for (int i = 0; i < image->width * image->height; ++i) {
+        double adjustedValue = (image->data[i] - 128) * intensity + 128;
+        result->data[i] = (unsigned char)fmin(fmax(adjustedValue, 0), 255);
+    }
+
+    return result;
+}
+
+// Fonction pour ajuster le contraste d'une image en couleur
+ColorImage* adjustContrastColor(ColorImage* image, double intensity) {
+    ColorImage* result = (ColorImage*)malloc(sizeof(ColorImage));
+    result->width = image->width;
+    result->height = image->height;
+    result->r = (unsigned char*)malloc(image->width * image->height * sizeof(unsigned char));
+    result->g = (unsigned char*)malloc(image->width * image->height * sizeof(unsigned char));
+    result->b = (unsigned char*)malloc(image->width * image->height * sizeof(unsigned char));
+
+    // Appliquer l'ajustement de contraste canal par canal
+    for (int i = 0; i < image->width * image->height; ++i) {
+        double adjustedR = (image->r[i] - 128) * intensity + 128;
+        double adjustedG = (image->g[i] - 128) * intensity + 128;
+        double adjustedB = (image->b[i] - 128) * intensity + 128;
+
+        result->r[i] = (unsigned char)fmin(fmax(adjustedR, 0), 255);
+        result->g[i] = (unsigned char)fmin(fmax(adjustedG, 0), 255);
+        result->b[i] = (unsigned char)fmin(fmax(adjustedB, 0), 255);
+    }
+
+    return result;
+}

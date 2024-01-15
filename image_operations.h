@@ -31,6 +31,7 @@ GrayImage* rotateAndResizeImage(GrayImage* image, double angle);
 GrayImage* translateImage(GrayImage* image, const char direction, int pixels);
 GrayImage* pixelizeImage(GrayImage* image, int intensity);
 GrayImage* applyNegative(GrayImage* image);
+GrayImage* adjustContrast(GrayImage* image, double intensity);
 
 ColorImage* openPPM(const char* filename);
 void savePPM(const char* filename, ColorImage* image);
@@ -40,6 +41,7 @@ ColorImage* rotateAndResizeImageColor(ColorImage* image, double angle);
 ColorImage* translateImageColor(ColorImage* image, const char direction, int pixels);
 ColorImage* pixelizeImageColor(ColorImage* image, int intensity);
 ColorImage* applyNegativeColor(ColorImage* image);
+ColorImage* adjustContrastColor(ColorImage* image, double intensity);
 
 ImageType detectImageType(const char* filename);
 
