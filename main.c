@@ -29,7 +29,8 @@ int main() {
         printf("5. Appliquer une rotation\n");
         printf("6. Appliquer une translation\n");
         printf("7. Appliquer un effet de pixelisation\n");
-        printf("8. Quitter\n");
+        printf("8. Appliquer un effet de negatif\n");
+        printf("9. Quitter\n");
         printf("Entrez votre choix : ");
         scanf("%d", &choice);
 
@@ -194,8 +195,19 @@ int main() {
                 }
                 break;
 
-
             case 8:
+                if (grayOutputImage != NULL) {
+                    grayOutputImage = applyNegative(grayOutputImage);
+                    printf("Effet négatif appliqué avec succès (noir et blanc).\n");
+                } else if (colorOutputImage != NULL) {
+                    colorOutputImage = applyNegativeColor(colorOutputImage);
+                    printf("Effet négatif appliqué avec succès (couleur).\n");
+                } else {
+                    fprintf(stderr, "Aucune image chargée pour appliquer l'effet négatif.\n");
+                }
+                break;
+
+            case 9:
                 // Quitter le programme
                 break;
 
@@ -204,7 +216,7 @@ int main() {
                 break;
         }
 
-    } while (choice != 8);
+    } while (choice != 9);
 
     // Libérer la mémoire
     if (graySourceImage != NULL) {

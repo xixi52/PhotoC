@@ -559,3 +559,36 @@ ColorImage* pixelizeImageColor(ColorImage* image, int intensity) {
 
     return result;
 }
+
+// Fonction pour appliquer un effet de négatif sur une image en niveaux de gris
+GrayImage* applyNegative(GrayImage* image) {
+    GrayImage* result = (GrayImage*)malloc(sizeof(GrayImage));
+    result->width = image->width;
+    result->height = image->height;
+    result->data = (unsigned char*)malloc(image->width * image->height * sizeof(unsigned char));
+
+    for (int i = 0; i < image->width * image->height; ++i) {
+        result->data[i] = 255 - image->data[i];
+    }
+
+    return result;
+}
+
+// Fonction pour appliquer un effet de négatif sur une image en couleur
+ColorImage* applyNegativeColor(ColorImage* image) {
+    ColorImage* result = (ColorImage*)malloc(sizeof(ColorImage));
+    result->width = image->width;
+    result->height = image->height;
+    result->r = (unsigned char*)malloc(image->width * image->height * sizeof(unsigned char));
+    result->g = (unsigned char*)malloc(image->width * image->height * sizeof(unsigned char));
+    result->b = (unsigned char*)malloc(image->width * image->height * sizeof(unsigned char));
+
+    for (int i = 0; i < image->width * image->height; ++i) {
+        result->r[i] = 255 - image->r[i];
+        result->g[i] = 255 - image->g[i];
+        result->b[i] = 255 - image->b[i];
+    }
+
+    return result;
+}
+
