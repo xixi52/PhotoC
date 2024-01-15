@@ -27,11 +27,13 @@ GrayImage* openPGM(const char* filename);
 void savePGM(const char* filename, GrayImage* image);
 GrayImage* applyBlur(GrayImage* image, int intensity);
 GrayImage* applyMirror(GrayImage* image, int direction);
+GrayImage* rotateAndResizeImage(GrayImage* image, double angle);
 
 ColorImage* openPPM(const char* filename);
 void savePPM(const char* filename, ColorImage* image);
 ColorImage* applyBlurColor(ColorImage* image, int intensity);
 ColorImage* applyMirrorColor(ColorImage* image, int direction);
+ColorImage* rotateAndResizeImageColor(ColorImage* image, double angle);
 
 ImageType detectImageType(const char* filename);
 

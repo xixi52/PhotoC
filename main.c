@@ -24,7 +24,8 @@ int main() {
         printf("2. Enregistrer une image\n");
         printf("3. Appliquer un effet de flou\n");
         printf("4. Appliquer un effet de miroir\n");
-        printf("5. Quitter\n");
+        printf("5. Appliquer une rotation\n");
+        printf("6. Quitter\n");
         printf("Entrez votre choix : ");
         scanf("%d", &choice);
 
@@ -123,6 +124,24 @@ int main() {
                 break;
 
             case 5:
+                if (grayOutputImage != NULL || colorOutputImage != NULL) {
+                    double angle;
+                    printf("Entrez l'angle de rotation en degrés : ");
+                    scanf("%lf", &angle);
+
+                    if (grayOutputImage != NULL) {
+                        grayOutputImage = rotateAndResizeImage(grayOutputImage, angle);
+                        printf("Rotation avec redimensionnement appliquée avec succès.\n");
+                    } else if (colorOutputImage != NULL) {
+                        colorOutputImage = rotateAndResizeImageColor(colorOutputImage, angle);
+                        printf("Rotation avec redimensionnement appliquée avec succès.\n");
+                    }
+                } else {
+                    fprintf(stderr, "Aucune image chargée pour appliquer la rotation avec redimensionnement.\n");
+                }
+                break;
+
+            case 6:
                 // Quitter le programme
                 break;
 
@@ -131,7 +150,7 @@ int main() {
                 break;
         }
 
-    } while (choice != 5);
+    } while (choice != 6);
 
     // Libérer la mémoire
     if (graySourceImage != NULL) {

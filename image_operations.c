@@ -253,3 +253,125 @@ ColorImage* applyMirrorColor(ColorImage* image, int direction) {
 
     return result;
 }
+
+// Fonction pour appliquer un effet de rotation sur une image en niveaux de gris
+GrayImage* rotateAndResizeImage(GrayImage* image, double angle) {
+    double radians = angle * M_PI / 180.0;
+    int newWidth = (int)ceil(fabs(cos(radians)) * image->width + fabs(sin(radians)) * image->height);
+    int newHeight = (int)ceil(fabs(sin(radians)) * image->width + fabs(cos(radians)) * image->height);
+
+    GrayImage* result = (GrayImage*)malloc(sizeof(GrayImage));
+    result->width = newWidth;
+    result->height = newHeight;
+    result->data = (unsigned char*)malloc(newWidth * newHeight * sizeof(unsigned char));
+
+    int centerXOld = image->width / 2;
+    int centerYOld = image->height / 2;
+
+    int centerXNew = newWidth / 2;
+    int centerYNew = newHeight / 2;
+
+    for (int y = 0; y < newHeight; ++y) {
+        for (int x = 0; x < newWidth; ++x) {
+            double srcX = cos(radians) * (x - centerXNew) + sin(radians) * (y - centerYNew) + centerXOld;
+            double srcY = -sin(radians) * (x - centerXNew) + cos(radians) * (y - centerYNew) + centerYOld;
+
+            if (srcX >= 0 && srcX < image->width - 1 && srcY >= 0 && srcY < image->height - 1) {
+                int x0 = (int)floor(srcX);
+                int y0 = (int)floor(srcY);
+                int x1 = x0 + 1;
+                int y1 = y0 + 1;
+
+                double alpha = srcX - x0;
+                double beta = srcY - y0;
+
+                // Vérifie si les indices ne dépassent pas les dimensions de l'image source
+                if (x0 >= 0 && x0 < image->width - 1 && y0 >= 0 && y0 < image->height - 1 &&
+                    x1 >= 0 && x1 < image->width && y1 >= 0 && y1 < image->height) {
+                    double interpolatedValue = (1 - alpha) * (1 - beta) * image->data[y0 * image->width + x0] +
+                                               alpha * (1 - beta) * image->data[y0 * image->width + x1] +
+                                               (1 - alpha) * beta * image->data[y1 * image->width + x0] +
+                                               alpha * beta * image->data[y1 * image->width + x1];
+
+                    result->data[y * newWidth + x] = (unsigned char)interpolatedValue;
+                } else {
+                    result->data[y * newWidth + x] = 0; // Fond noir (0)
+                }
+            } else {
+                result->data[y * newWidth + x] = 0; // Fond noir (0)
+            }
+        }
+    }
+
+    return result;
+}
+
+// Fonction pour appliquer un effet de rotation sur une image en couleur
+ColorImage* rotateAndResizeImageColor(ColorImage* image, double angle) {
+    double radians = angle * M_PI / 180.0;
+    int newWidth = (int)ceil(fabs(cos(radians)) * image->width + fabs(sin(radians)) * image->height);
+    int newHeight = (int)ceil(fabs(sin(radians)) * image->width + fabs(cos(radians)) * image->height);
+
+    ColorImage* result = (ColorImage*)malloc(sizeof(ColorImage));
+    result->width = newWidth;
+    result->height = newHeight;
+    result->r = (unsigned char*)malloc(newWidth * newHeight * sizeof(unsigned char));
+    result->g = (unsigned char*)malloc(newWidth * newHeight * sizeof(unsigned char));
+    result->b = (unsigned char*)malloc(newWidth * newHeight * sizeof(unsigned char));
+
+    int centerXOld = image->width / 2;
+    int centerYOld = image->height / 2;
+
+    int centerXNew = newWidth / 2;
+    int centerYNew = newHeight / 2;
+
+    for (int y = 0; y < newHeight; ++y) {
+        for (int x = 0; x < newWidth; ++x) {
+            double srcX = cos(radians) * (x - centerXNew) + sin(radians) * (y - centerYNew) + centerXOld;
+            double srcY = -sin(radians) * (x - centerXNew) + cos(radians) * (y - centerYNew) + centerYOld;
+
+            if (srcX >= 0 && srcX < image->width - 1 && srcY >= 0 && srcY < image->height - 1) {
+                int x0 = (int)floor(srcX);
+                int y0 = (int)floor(srcY);
+                int x1 = x0 + 1;
+                int y1 = y0 + 1;
+
+                double alpha = srcX - x0;
+                double beta = srcY - y0;
+
+                // Vérifie si les indices ne dépassent pas les dimensions de l'image source
+                if (x0 >= 0 && x0 < image->width - 1 && y0 >= 0 && y0 < image->height - 1 &&
+                    x1 >= 0 && x1 < image->width && y1 >= 0 && y1 < image->height) {
+                    double interpolatedR = (1 - alpha) * (1 - beta) * image->r[y0 * image->width + x0] +
+                                           alpha * (1 - beta) * image->r[y0 * image->width + x1] +
+                                           (1 - alpha) * beta * image->r[y1 * image->width + x0] +
+                                           alpha * beta * image->r[y1 * image->width + x1];
+
+                    double interpolatedG = (1 - alpha) * (1 - beta) * image->g[y0 * image->width + x0] +
+                                           alpha * (1 - beta) * image->g[y0 * image->width + x1] +
+                                           (1 - alpha) * beta * image->g[y1 * image->width + x0] +
+                                           alpha * beta * image->g[y1 * image->width + x1];
+
+                    double interpolatedB = (1 - alpha) * (1 - beta) * image->b[y0 * image->width + x0] +
+                                           alpha * (1 - beta) * image->b[y0 * image->width + x1] +
+                                           (1 - alpha) * beta * image->b[y1 * image->width + x0] +
+                                           alpha * beta * image->b[y1 * image->width + x1];
+
+                    result->r[y * newWidth + x] = (unsigned char)interpolatedR;
+                    result->g[y * newWidth + x] = (unsigned char)interpolatedG;
+                    result->b[y * newWidth + x] = (unsigned char)interpolatedB;
+                } else {
+                    result->r[y * newWidth + x] = 0; // Fond noir (0)
+                    result->g[y * newWidth + x] = 0;
+                    result->b[y * newWidth + x] = 0;
+                }
+            } else {
+                result->r[y * newWidth + x] = 0; // Fond noir (0)
+                result->g[y * newWidth + x] = 0;
+                result->b[y * newWidth + x] = 0;
+            }
+        }
+    }
+
+    return result;
+}
