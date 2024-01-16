@@ -36,7 +36,8 @@ int main() {
         printf("9. Modifier le contraste\n");
         printf("10. Modifier la luminosité\n");
         printf("11. Modifier le seuillage\n");
-        printf("12. Quitter\n");
+        printf("12. Modifier l'echelle\n");
+        printf("13. Quitter\n");
         printf("Entrez votre choix : ");
         scanf("%d", &choice);
 
@@ -271,6 +272,37 @@ int main() {
                 break;
 
             case 12:
+                // Mise à l'échelle de l'image
+                if (grayOutputImage != NULL || colorOutputImage != NULL) {
+                    float scale;
+                    printf("Entrez le facteur d'agrandissement (entre 1.0 et 5.0) ou de dézoom (entre 0.1 et 1.0) : ");
+                    scanf("%f", &scale);
+
+                    if ((scale >= 1.0 && scale <= 5.0) || (scale >= 0.1 && scale < 1.0)) {
+                        if (grayOutputImage != NULL) {
+                            GrayImage* scaledImage = scaleGray(grayOutputImage, scale);
+                            free(grayOutputImage->data);
+                            free(grayOutputImage);
+                            grayOutputImage = scaledImage;
+                        } else if (colorOutputImage != NULL) {
+                            ColorImage* scaledImage = scaleColor(colorOutputImage, scale);
+                            free(colorOutputImage->r);
+                            free(colorOutputImage->g);
+                            free(colorOutputImage->b);
+                            free(colorOutputImage);
+                            colorOutputImage = scaledImage;
+                        }
+
+                        printf("Image mise à l'échelle avec succès.\n");
+                    } else {
+                        fprintf(stderr, "Erreur : Le facteur de mise à l'échelle doit être entre 1.0 et 5.0 pour l'agrandissement ou entre 0.1 et 1.0 pour le dézoom.\n");
+                    }
+                } else {
+                    fprintf(stderr, "Aucune image chargée pour la mise à l'échelle.\n");
+                }
+                break;
+
+            case 13:
                 // Quitter le programme
                 break;
 
@@ -279,7 +311,7 @@ int main() {
                 break;
         }
 
-    } while (choice != 12);
+    } while (choice != 13);
 
     // Libérer la mémoire
     if (graySourceImage != NULL) {

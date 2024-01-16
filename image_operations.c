@@ -703,3 +703,96 @@ ColorImage* thresholdColor(ColorImage* image, unsigned char threshold) {
 
     return result;
 }
+
+// Fonction pour mettre à l'échelle une image en niveaux de gris
+GrayImage* scaleGray(GrayImage* image, float scale) {
+    int newWidth = (int)(image->width * scale);
+    int newHeight = (int)(image->height * scale);
+
+    GrayImage* result = (GrayImage*)malloc(sizeof(GrayImage));
+    result->width = newWidth;
+    result->height = newHeight;
+    result->data = (unsigned char*)malloc(newWidth * newHeight * sizeof(unsigned char));
+
+    for (int y = 0; y < newHeight; ++y) {
+        for (int x = 0; x < newWidth; ++x) {
+            // Coordonnées dans l'image d'origine
+            float srcX = x / scale;
+            float srcY = y / scale;
+
+            // Coordonnées des pixels voisins
+            int x1 = (int)srcX;
+            int y1 = (int)srcY;
+            int x2 = fmin(x1 + 1, image->width - 1);
+            int y2 = fmin(y1 + 1, image->height - 1);
+
+            // Coefficients pour l'interpolation bilinéaire
+            float dx = srcX - x1;
+            float dy = srcY - y1;
+
+            // Interpolation bilinéaire
+            float interpolatedValue = (1 - dx) * (1 - dy) * image->data[y1 * image->width + x1] +
+                                      dx * (1 - dy) * image->data[y1 * image->width + x2] +
+                                      (1 - dx) * dy * image->data[y2 * image->width + x1] +
+                                      dx * dy * image->data[y2 * image->width + x2];
+
+            result->data[y * newWidth + x] = (unsigned char)interpolatedValue;
+        }
+    }
+
+    return result;
+}
+
+// Fonction pour mettre à l'échelle une image en couleur
+ColorImage* scaleColor(ColorImage* image, float scale) {
+    int newWidth = (int)(image->width * scale);
+    int newHeight = (int)(image->height * scale);
+
+    ColorImage* result = (ColorImage*)malloc(sizeof(ColorImage));
+    result->width = newWidth;
+    result->height = newHeight;
+    result->r = (unsigned char*)malloc(newWidth * newHeight * sizeof(unsigned char));
+    result->g = (unsigned char*)malloc(newWidth * newHeight * sizeof(unsigned char));
+    result->b = (unsigned char*)malloc(newWidth * newHeight * sizeof(unsigned char));
+
+    for (int y = 0; y < newHeight; ++y) {
+        for (int x = 0; x < newWidth; ++x) {
+            // Coordonnées dans l'image d'origine
+            float srcX = x / scale;
+            float srcY = y / scale;
+
+            // Coordonnées des pixels voisins
+            int x1 = (int)srcX;
+            int y1 = (int)srcY;
+            int x2 = fmin(x1 + 1, image->width - 1);
+            int y2 = fmin(y1 + 1, image->height - 1);
+
+            // Coefficients pour l'interpolation bilinéaire
+            float dx = srcX - x1;
+            float dy = srcY - y1;
+
+            // Interpolation bilinéaire pour chaque canal de couleur
+            float interpolatedR = (1 - dx) * (1 - dy) * image->r[y1 * image->width + x1] +
+                                  dx * (1 - dy) * image->r[y1 * image->width + x2] +
+                                  (1 - dx) * dy * image->r[y2 * image->width + x1] +
+                                  dx * dy * image->r[y2 * image->width + x2];
+
+            float interpolatedG = (1 - dx) * (1 - dy) * image->g[y1 * image->width + x1] +
+                                  dx * (1 - dy) * image->g[y1 * image->width + x2] +
+                                  (1 - dx) * dy * image->g[y2 * image->width + x1] +
+                                  dx * dy * image->g[y2 * image->width + x2];
+
+            float interpolatedB = (1 - dx) * (1 - dy) * image->b[y1 * image->width + x1] +
+                                  dx * (1 - dy) * image->b[y1 * image->width + x2] +
+                                  (1 - dx) * dy * image->b[y2 * image->width + x1] +
+                                  dx * dy * image->b[y2 * image->width + x2];
+
+            result->r[y * newWidth + x] = (unsigned char)interpolatedR;
+            result->g[y * newWidth + x] = (unsigned char)interpolatedG;
+            result->b[y * newWidth + x] = (unsigned char)interpolatedB;
+        }
+    }
+
+    return result;
+}
+
