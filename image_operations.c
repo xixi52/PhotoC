@@ -669,3 +669,37 @@ ColorImage* adjustBrightnessColor(ColorImage* image, int delta) {
 
     return result;
 }
+
+// Fonction pour seuiller une image en niveaux de gris
+GrayImage* thresholdGray(GrayImage* image, unsigned char threshold) {
+    GrayImage* result = (GrayImage*)malloc(sizeof(GrayImage));
+    result->width = image->width;
+    result->height = image->height;
+    result->data = (unsigned char*)malloc(image->width * image->height * sizeof(unsigned char));
+
+    // Appliquer le seuillage pixel par pixel
+    for (int i = 0; i < image->width * image->height; ++i) {
+        result->data[i] = (image->data[i] < threshold) ? 0 : 255;
+    }
+
+    return result;
+}
+
+// Fonction pour seuiller une image en couleur
+ColorImage* thresholdColor(ColorImage* image, unsigned char threshold) {
+    ColorImage* result = (ColorImage*)malloc(sizeof(ColorImage));
+    result->width = image->width;
+    result->height = image->height;
+    result->r = (unsigned char*)malloc(image->width * image->height * sizeof(unsigned char));
+    result->g = (unsigned char*)malloc(image->width * image->height * sizeof(unsigned char));
+    result->b = (unsigned char*)malloc(image->width * image->height * sizeof(unsigned char));
+
+    // Appliquer le seuillage canal par canal
+    for (int i = 0; i < image->width * image->height; ++i) {
+        result->r[i] = (image->r[i] < threshold) ? 0 : 255;
+        result->g[i] = (image->g[i] < threshold) ? 0 : 255;
+        result->b[i] = (image->b[i] < threshold) ? 0 : 255;
+    }
+
+    return result;
+}

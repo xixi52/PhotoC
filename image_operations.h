@@ -33,6 +33,7 @@ GrayImage* pixelizeImage(GrayImage* image, int intensity);
 GrayImage* applyNegative(GrayImage* image);
 GrayImage* adjustContrast(GrayImage* image, double intensity);
 GrayImage* adjustBrightness(GrayImage* image, int delta);
+GrayImage* thresholdGray(GrayImage* image, unsigned char threshold);
 
 ColorImage* openPPM(const char* filename);
 void savePPM(const char* filename, ColorImage* image);
@@ -44,6 +45,7 @@ ColorImage* pixelizeImageColor(ColorImage* image, int intensity);
 ColorImage* applyNegativeColor(ColorImage* image);
 ColorImage* adjustContrastColor(ColorImage* image, double intensity);
 ColorImage* adjustBrightnessColor(ColorImage* image, int delta);
+ColorImage* thresholdColor(ColorImage* image, unsigned char threshold);
 
 ImageType detectImageType(const char* filename);
 

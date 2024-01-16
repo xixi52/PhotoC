@@ -20,6 +20,7 @@ int main() {
     int pixels;
     double contrastIntensity;
     int brightnessDelta;
+    unsigned char threshold;
 
     // Menu principal
     do {
@@ -34,7 +35,8 @@ int main() {
         printf("8. Appliquer un effet de negatif\n");
         printf("9. Modifier le contraste\n");
         printf("10. Modifier la luminosité\n");
-        printf("11. Quitter\n");
+        printf("11. Modifier le seuillage\n");
+        printf("12. Quitter\n");
         printf("Entrez votre choix : ");
         scanf("%d", &choice);
 
@@ -250,6 +252,25 @@ int main() {
                 break;
 
             case 11:
+                printf("Entrez la valeur de seuil (0-255) : ");
+                scanf("%hhu", &threshold);
+
+                if (threshold <= 255) {
+                    if (grayOutputImage != NULL) {
+                        grayOutputImage = thresholdGray(grayOutputImage, threshold);
+                        printf("Seuillage appliqué avec succès (PGM).\n");
+                    } else if (colorOutputImage != NULL) {
+                        colorOutputImage = thresholdColor(colorOutputImage, threshold);
+                        printf("Seuillage appliqué avec succès (PPM).\n");
+                    } else {
+                        fprintf(stderr, "Aucune image chargée pour appliquer le seuillage.\n");
+                    }
+                } else {
+                    fprintf(stderr, "La valeur de seuil doit être entre 0 et 255.\n");
+                }
+                break;
+
+            case 12:
                 // Quitter le programme
                 break;
 
@@ -258,7 +279,7 @@ int main() {
                 break;
         }
 
-    } while (choice != 11);
+    } while (choice != 12);
 
     // Libérer la mémoire
     if (graySourceImage != NULL) {
