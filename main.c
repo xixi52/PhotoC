@@ -303,6 +303,19 @@ int main() {
                 break;
 
             case 13:
+                // Générer et sauvegarder l'histogramme en noir et blanc
+                if (grayOutputImage != NULL) {
+                    char histogramBWFileName[100];
+                    printf("Entrez le nom du fichier pour l'histogramme en noir et blanc (sans extension) : ");
+                    scanf("%s", histogramBWFileName);
+                    strcat(histogramBWFileName, ".pgm");
+                    generateHistogramGray(grayOutputImage, histogramBWFileName);
+                } else {
+                    fprintf(stderr, "Aucune image en niveaux de gris chargée pour générer l'histogramme.\n");
+                }
+                break;
+
+            case 14:
                 // Quitter le programme
                 break;
 
@@ -311,7 +324,7 @@ int main() {
                 break;
         }
 
-    } while (choice != 13);
+    } while (choice != 14);
 
     // Liberer la memoire
     if (graySourceImage != NULL) {

@@ -796,3 +796,48 @@ ColorImage* scaleColor(ColorImage* image, float scale) {
     return result;
 }
 
+// Fonction pour générer un histogramme en noir et blanc et sauvegarder en fichier PGM
+void generateHistogramGray(GrayImage* image, const char* outputFileName) {
+    FILE* file = fopen(outputFileName, "w");
+    if (!file) {
+        fprintf(stderr, "Erreur lors de la création du fichier PGM pour l'histogramme.\n");
+        return;
+    }
+
+    fprintf(file, "P2\n");
+    fprintf(file, "256 256\n"); // Taille de l'histogramme
+    fprintf(file, "255\n"); // Valeur maximale d'intensité
+
+    // Calculer l'histogramme
+    int pixels[256] = {0};
+    for (int i = 0; i < image->width * image->height; ++i) {
+        pixels[image->data[i]]++;
+    }
+
+    // Trouver la valeur maximale de l'histogramme
+    int maxFrequency = 0;
+    for (int i = 0; i < 256; ++i) {
+        if (pixels[i] > maxFrequency) {
+            maxFrequency = pixels[i];
+        }
+    }
+
+    // Normaliser et ecrire l'histogramme dans le fichier PGM
+    for (int j = 0; j < 256; ++j) {
+        for (int i = 0; i <= 255; ++i) {
+            int normalizedHeight = (pixels[i] * 255) / maxFrequency;
+            if (j >= 255 - normalizedHeight) {
+                fprintf(file, "0 ");  // attribuer 0 pour les pixels representant l'histogramme
+            } else {
+                fprintf(file, "255 ");  // attribuer 255 pour les pixels qui ne representent pas l'histogramme
+            }
+        }
+        fprintf(file, "\n");
+    }
+
+    fclose(file);
+    printf("Histogramme en noir et blanc genere avec succes.\n");
+}
+
+
+

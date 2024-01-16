@@ -35,6 +35,7 @@ GrayImage* adjustContrast(GrayImage* image, double intensity);
 GrayImage* adjustBrightness(GrayImage* image, int delta);
 GrayImage* thresholdGray(GrayImage* image, unsigned char threshold);
 GrayImage* scaleGray(GrayImage* image, float scale);
+void generateHistogramGray(GrayImage* image, const char* outputFileName);
 
 ColorImage* openPPM(const char* filename);
 void savePPM(const char* filename, ColorImage* image);
