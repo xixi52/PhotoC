@@ -256,7 +256,7 @@ int main() {
                 printf("Entrez la valeur de seuil (0-255) : ");
                 scanf("%hhu", &threshold);
 
-                if (threshold <= 255) {
+                if (threshold <= 255 && threshold >= 0) {
                     if (grayOutputImage != NULL) {
                         grayOutputImage = thresholdGray(grayOutputImage, threshold);
                         printf("Seuillage applique avec succes (PGM).\n");
