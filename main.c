@@ -34,7 +34,7 @@ int main() {
         printf("7. Appliquer un effet de pixelisation\n");
         printf("8. Appliquer un effet de negatif\n");
         printf("9. Modifier le contraste\n");
-        printf("10. Modifier la luminosité\n");
+        printf("10. Modifier la luminosite\n");
         printf("11. Modifier le seuillage\n");
         printf("12. Modifier l'echelle\n");
         printf("13. Quitter\n");
@@ -52,9 +52,9 @@ int main() {
                     if (graySourceImage == NULL) {
                         fprintf(stderr, "Erreur lors du chargement de l'image.\n");
                     } else {
-                        printf("Image PGM chargée avec succès.\n");
+                        printf("Image PGM chargee avec succes.\n");
                         grayOutputImage = graySourceImage; // Copie de l'image source pour travailler dessus
-                        colorSourceImage = NULL; // Réinitialiser l'image couleur
+                        colorSourceImage = NULL; // Reinitialiser l'image couleur
                         colorOutputImage = NULL;
                     }
                 } else if (detectImageType(sourceFileName) == PPM) {
@@ -62,9 +62,9 @@ int main() {
                     if (colorSourceImage == NULL) {
                         fprintf(stderr, "Erreur lors du chargement de l'image.\n");
                     } else {
-                        printf("Image PPM chargée avec succès.\n");
+                        printf("Image PPM chargee avec succes.\n");
                         colorOutputImage = colorSourceImage; // Copie de l'image source pour travailler dessus
-                        graySourceImage = NULL; // Réinitialiser l'image en niveaux de gris
+                        graySourceImage = NULL; // Reinitialiser l'image en niveaux de gris
                         grayOutputImage = NULL;
                     }
                 } else {
@@ -80,10 +80,10 @@ int main() {
                     scanf("%s", outputFileName);
                     if (grayOutputImage != NULL) {
                         savePGM(outputFileName, grayOutputImage);
-                        printf("Image PGM enregistrée avec succès.\n");
+                        printf("Image PGM enregistree avec succes.\n");
                     } else if (colorOutputImage != NULL) {
                         savePPM(outputFileName, colorOutputImage);
-                        printf("Image PPM enregistrée avec succès.\n");
+                        printf("Image PPM enregistree avec succes.\n");
                     }
                 }
                 break;
@@ -91,22 +91,22 @@ int main() {
             case 3:
                 if (grayOutputImage != NULL || colorOutputImage != NULL) {
                     int blurIntensity;
-                    printf("Entrez l'intensité du flou (1-10) : ");
+                    printf("Entrez l'intensite du flou (1-10) : ");
                     scanf("%d", &blurIntensity);
 
                     if (blurIntensity < 1 || blurIntensity > 10) {
-                        fprintf(stderr, "L'intensité du flou doit être comprise entre 1 et 10.\n");
+                        fprintf(stderr, "L'intensite du flou doit etre comprise entre 1 et 10.\n");
                     } else {
                         if (grayOutputImage != NULL) {
                             grayOutputImage = applyBlur(grayOutputImage, blurIntensity);
-                            printf("Effet de flou appliqué avec succès.\n");
+                            printf("Effet de flou applique avec succes.\n");
                         } else if (colorOutputImage != NULL) {
                             colorOutputImage = applyBlurColor(colorOutputImage, blurIntensity);
-                            printf("Effet de flou appliqué avec succès.\n");
+                            printf("Effet de flou applique avec succes.\n");
                         }
                     }
                 } else {
-                    fprintf(stderr, "Aucune image chargée pour appliquer l'effet de flou.\n");
+                    fprintf(stderr, "Aucune image chargee pour appliquer l'effet de flou.\n");
                 }
                 break;
 
@@ -124,32 +124,32 @@ int main() {
                     } else {
                         if (grayOutputImage != NULL) {
                             grayOutputImage = applyMirror(grayOutputImage, mirrorDirection);
-                            printf("Effet miroir appliqué avec succès.\n");
+                            printf("Effet miroir applique avec succes.\n");
                         } else if (colorOutputImage != NULL) {
                             colorOutputImage = applyMirrorColor(colorOutputImage, mirrorDirection);
-                            printf("Effet miroir appliqué avec succès.\n");
+                            printf("Effet miroir applique avec succes.\n");
                         }
                     }
                 } else {
-                    fprintf(stderr, "Aucune image chargée pour appliquer l'effet miroir.\n");
+                    fprintf(stderr, "Aucune image chargee pour appliquer l'effet miroir.\n");
                 }
                 break;
 
             case 5:
                 if (grayOutputImage != NULL || colorOutputImage != NULL) {
                     double angle;
-                    printf("Entrez l'angle de rotation en degrés : ");
+                    printf("Entrez l'angle de rotation en degres : ");
                     scanf("%lf", &angle);
 
                     if (grayOutputImage != NULL) {
                         grayOutputImage = rotateAndResizeImage(grayOutputImage, angle);
-                        printf("Rotation avec redimensionnement appliquée avec succès.\n");
+                        printf("Rotation avec redimensionnement appliquee avec succes.\n");
                     } else if (colorOutputImage != NULL) {
                         colorOutputImage = rotateAndResizeImageColor(colorOutputImage, angle);
-                        printf("Rotation avec redimensionnement appliquée avec succès.\n");
+                        printf("Rotation avec redimensionnement appliquee avec succes.\n");
                     }
                 } else {
-                    fprintf(stderr, "Aucune image chargée pour appliquer la rotation avec redimensionnement.\n");
+                    fprintf(stderr, "Aucune image chargee pour appliquer la rotation avec redimensionnement.\n");
                 }
                 break;
 
@@ -158,97 +158,97 @@ int main() {
                 if (grayOutputImage != NULL) {
                     printf("Entrez la direction de la translation (H/B/G/D) : ");
                     scanf(" %c", &direction);
-                    printf("Entrez le nombre de pixels à déplacer : ");
+                    printf("Entrez le nombre de pixels à deplacer : ");
                     scanf("%d", &pixels);
                     grayOutputImage = translateImage(grayOutputImage, direction, pixels);
-                    printf("Pixels translater avec succès.\n");
+                    printf("Pixels translater avec succes.\n");
                 } else if (colorOutputImage != NULL) {
                     printf("Entrez la direction de la translation (H/B/G/D) : ");
                     scanf(" %c", &direction);
-                    printf("Entrez le nombre de pixels à déplacer : ");
+                    printf("Entrez le nombre de pixels à deplacer : ");
                     scanf("%d", &pixels);
                     colorOutputImage = translateImageColor(colorOutputImage, direction, pixels);
-                    printf("Pixels translater avec succès.\n");
+                    printf("Pixels translater avec succes.\n");
                 } else {
-                    fprintf(stderr, "Aucune image chargée pour translater les pixels.\n");
+                    fprintf(stderr, "Aucune image chargee pour translater les pixels.\n");
                 }
                 break;
 
             case 7:
                 if (colorOutputImage != NULL) {
                     int pixelizeIntensity;
-                    printf("Entrez l'intensité de pixelisation (1-10) : ");
+                    printf("Entrez l'intensite de pixelisation (1-10) : ");
                     scanf("%d", &pixelizeIntensity);
 
                     if (pixelizeIntensity >= 1 && pixelizeIntensity <= 10) {
                         colorOutputImage = pixelizeImageColor(colorOutputImage, pixelizeIntensity);
-                        printf("Pixelisation couleur appliquée avec succès.\n");
+                        printf("Pixelisation couleur appliquee avec succes.\n");
                     } else {
-                        fprintf(stderr, "L'intensité de pixelisation doit être comprise entre 1 et 10.\n");
+                        fprintf(stderr, "L'intensite de pixelisation doit etre comprise entre 1 et 10.\n");
                     }
                 } else if (grayOutputImage != NULL) {
                     int pixelizeIntensity;
-                    printf("Entrez l'intensité de pixelisation (1-10) : ");
+                    printf("Entrez l'intensite de pixelisation (1-10) : ");
                     scanf("%d", &pixelizeIntensity);
 
                     if (pixelizeIntensity >= 1 && pixelizeIntensity <= 10) {
                         grayOutputImage = pixelizeImage(grayOutputImage, pixelizeIntensity);
-                        printf("Pixelisation noir et blanc appliquée avec succès.\n");
+                        printf("Pixelisation noir et blanc appliquee avec succes.\n");
                     } else {
-                        fprintf(stderr, "L'intensité de pixelisation doit être comprise entre 1 et 10.\n");
+                        fprintf(stderr, "L'intensite de pixelisation doit etre comprise entre 1 et 10.\n");
                     }
                 } else {
-                    fprintf(stderr, "Aucune image chargée pour appliquer la pixelisation.\n");
+                    fprintf(stderr, "Aucune image chargee pour appliquer la pixelisation.\n");
                 }
                 break;
 
             case 8:
                 if (grayOutputImage != NULL) {
                     grayOutputImage = applyNegative(grayOutputImage);
-                    printf("Effet négatif appliqué avec succès (noir et blanc).\n");
+                    printf("Effet negatif applique avec succes (noir et blanc).\n");
                 } else if (colorOutputImage != NULL) {
                     colorOutputImage = applyNegativeColor(colorOutputImage);
-                    printf("Effet négatif appliqué avec succès (couleur).\n");
+                    printf("Effet negatif applique avec succes (couleur).\n");
                 } else {
-                    fprintf(stderr, "Aucune image chargée pour appliquer l'effet négatif.\n");
+                    fprintf(stderr, "Aucune image chargee pour appliquer l'effet negatif.\n");
                 }
                 break;
 
             case 9:
-                printf("Entrez l'intensité de contraste (0.1-2.0) : ");
+                printf("Entrez l'intensite de contraste (0.1-2.0) : ");
                 scanf("%lf", &contrastIntensity);
 
                 if (contrastIntensity >= 0.1 && contrastIntensity <= 2.0) {
                     if (grayOutputImage != NULL) {
                         grayOutputImage = adjustContrast(grayOutputImage, contrastIntensity);
-                        printf("Contraste ajusté avec succès (PGM).\n");
+                        printf("Contraste ajuste avec succes (PGM).\n");
                     } else if (colorOutputImage != NULL) {
                         colorOutputImage = adjustContrastColor(colorOutputImage, contrastIntensity);
-                        printf("Contraste ajusté avec succès (PPM).\n");
+                        printf("Contraste ajuste avec succes (PPM).\n");
                     } else {
-                        fprintf(stderr, "Aucune image chargée pour ajuster le contraste.\n");
+                        fprintf(stderr, "Aucune image chargee pour ajuster le contraste.\n");
                     }
                 } else {
-                    fprintf(stderr, "L'intensité de contraste doit être comprise entre 0.1 et 2.0.\n");
+                    fprintf(stderr, "L'intensite de contraste doit etre comprise entre 0.1 et 2.0.\n");
                 }
                 break;
 
             case 10:
-                printf("Entrez la valeur d'ajustement de luminosité (-255 à 255) : ");
+                printf("Entrez la valeur d'ajustement de luminosite (-255 à 255) : ");
                 scanf("%d", &brightnessDelta);
 
                 if (brightnessDelta >= -255 && brightnessDelta <= 255) {
                     if (grayOutputImage != NULL) {
                         grayOutputImage = adjustBrightness(grayOutputImage, brightnessDelta);
-                        printf("Luminosité ajustée avec succès (PGM).\n");
+                        printf("Luminosite ajustee avec succes (PGM).\n");
                     } else if (colorOutputImage != NULL) {
                         colorOutputImage = adjustBrightnessColor(colorOutputImage, brightnessDelta);
-                        printf("Luminosité ajustée avec succès (PPM).\n");
+                        printf("Luminosite ajustee avec succes (PPM).\n");
                     } else {
-                        fprintf(stderr, "Aucune image chargée pour ajuster la luminosité.\n");
+                        fprintf(stderr, "Aucune image chargee pour ajuster la luminosite.\n");
                     }
                 } else {
-                    fprintf(stderr, "La valeur d'ajustement de luminosité doit être entre -255 et 255.\n");
+                    fprintf(stderr, "La valeur d'ajustement de luminosite doit etre entre -255 et 255.\n");
                 }
                 break;
 
@@ -259,23 +259,23 @@ int main() {
                 if (threshold <= 255) {
                     if (grayOutputImage != NULL) {
                         grayOutputImage = thresholdGray(grayOutputImage, threshold);
-                        printf("Seuillage appliqué avec succès (PGM).\n");
+                        printf("Seuillage applique avec succes (PGM).\n");
                     } else if (colorOutputImage != NULL) {
                         colorOutputImage = thresholdColor(colorOutputImage, threshold);
-                        printf("Seuillage appliqué avec succès (PPM).\n");
+                        printf("Seuillage applique avec succes (PPM).\n");
                     } else {
-                        fprintf(stderr, "Aucune image chargée pour appliquer le seuillage.\n");
+                        fprintf(stderr, "Aucune image chargee pour appliquer le seuillage.\n");
                     }
                 } else {
-                    fprintf(stderr, "La valeur de seuil doit être entre 0 et 255.\n");
+                    fprintf(stderr, "La valeur de seuil doit etre entre 0 et 255.\n");
                 }
                 break;
 
             case 12:
-                // Mise à l'échelle de l'image
+                // Mise à l'echelle de l'image
                 if (grayOutputImage != NULL || colorOutputImage != NULL) {
                     float scale;
-                    printf("Entrez le facteur d'agrandissement (entre 1.0 et 5.0) ou de dézoom (entre 0.1 et 1.0) : ");
+                    printf("Entrez le facteur d'agrandissement (entre 1.0 et 5.0) ou de dezoom (entre 0.1 et 1.0) : ");
                     scanf("%f", &scale);
 
                     if ((scale >= 1.0 && scale <= 5.0) || (scale >= 0.1 && scale < 1.0)) {
@@ -293,12 +293,12 @@ int main() {
                             colorOutputImage = scaledImage;
                         }
 
-                        printf("Image mise à l'échelle avec succès.\n");
+                        printf("Image mise à l'echelle avec succes.\n");
                     } else {
-                        fprintf(stderr, "Erreur : Le facteur de mise à l'échelle doit être entre 1.0 et 5.0 pour l'agrandissement ou entre 0.1 et 1.0 pour le dézoom.\n");
+                        fprintf(stderr, "Erreur : Le facteur de mise à l'echelle doit etre entre 1.0 et 5.0 pour l'agrandissement ou entre 0.1 et 1.0 pour le dezoom.\n");
                     }
                 } else {
-                    fprintf(stderr, "Aucune image chargée pour la mise à l'échelle.\n");
+                    fprintf(stderr, "Aucune image chargee pour la mise à l'echelle.\n");
                 }
                 break;
 
@@ -307,13 +307,13 @@ int main() {
                 break;
 
             default:
-                fprintf(stderr, "Choix non valide. Veuillez réessayer.\n");
+                fprintf(stderr, "Choix non valide. Veuillez reessayer.\n");
                 break;
         }
 
     } while (choice != 13);
 
-    // Libérer la mémoire
+    // Liberer la memoire
     if (graySourceImage != NULL) {
         free(graySourceImage->data);
         free(graySourceImage);

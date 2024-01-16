@@ -1,7 +1,7 @@
 #ifndef IMAGE_OPERATIONS_H
 #define IMAGE_OPERATIONS_H
 
-// Enumération pour les types d'images
+// Enumeration pour les types d'images
 typedef enum {
     PGM, // Niveaux de gris
     PPM  // Couleur

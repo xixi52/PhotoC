@@ -99,7 +99,7 @@ ColorImage* openPPM(const char* filename) {
 void savePGM(const char* filename, GrayImage* image) {
     FILE* file = fopen(filename, "wb");
     if (!file) {
-        fprintf(stderr, "Erreur lors de la création du fichier PGM.\n");
+        fprintf(stderr, "Erreur lors de la creation du fichier PGM.\n");
         return;
     }
 
@@ -113,7 +113,7 @@ void savePGM(const char* filename, GrayImage* image) {
 void savePPM(const char* filename, ColorImage* image) {
     FILE* file = fopen(filename, "wb");
     if (!file) {
-        fprintf(stderr, "Erreur lors de la création du fichier PPM.\n");
+        fprintf(stderr, "Erreur lors de la creation du fichier PPM.\n");
         return;
     }
 
@@ -136,7 +136,7 @@ GrayImage* applyBlur(GrayImage* image, int intensity) {
     result->height = image->height;
     result->data = (unsigned char*)malloc(image->width * image->height * sizeof(unsigned char));
 
-    // Appliquer un flou moyenne pondéré en fonction de l'intensité
+    // Appliquer un flou moyenne pondere en fonction de l'intensite
     for (int y = 1; y < image->height - 1; ++y) {
         for (int x = 1; x < image->width - 1; ++x) {
             int sum = 0;
@@ -165,7 +165,7 @@ ColorImage* applyBlurColor(ColorImage* image, int intensity) {
     result->g = (unsigned char*)malloc(image->width * image->height * sizeof(unsigned char));
     result->b = (unsigned char*)malloc(image->width * image->height * sizeof(unsigned char));
 
-    // Appliquer un flou moyenne pondéré en fonction de l'intensité pour chaque canal de couleur
+    // Appliquer un flou moyenne pondere en fonction de l'intensite pour chaque canal de couleur
     for (int y = 1; y < image->height - 1; ++y) {
         for (int x = 1; x < image->width - 1; ++x) {
             int sumR = 0, sumG = 0, sumB = 0;
@@ -285,7 +285,7 @@ GrayImage* rotateAndResizeImage(GrayImage* image, double angle) {
                 double alpha = srcX - x0;
                 double beta = srcY - y0;
 
-                // Vérifie si les indices ne dépassent pas les dimensions de l'image source
+                // Verifie si les indices ne depassent pas les dimensions de l'image source
                 if (x0 >= 0 && x0 < image->width - 1 && y0 >= 0 && y0 < image->height - 1 &&
                     x1 >= 0 && x1 < image->width && y1 >= 0 && y1 < image->height) {
                     double interpolatedValue = (1 - alpha) * (1 - beta) * image->data[y0 * image->width + x0] +
@@ -339,7 +339,7 @@ ColorImage* rotateAndResizeImageColor(ColorImage* image, double angle) {
                 double alpha = srcX - x0;
                 double beta = srcY - y0;
 
-                // Vérifie si les indices ne dépassent pas les dimensions de l'image source
+                // Verifie si les indices ne depassent pas les dimensions de l'image source
                 if (x0 >= 0 && x0 < image->width - 1 && y0 >= 0 && y0 < image->height - 1 &&
                     x1 >= 0 && x1 < image->width && y1 >= 0 && y1 < image->height) {
                     double interpolatedR = (1 - alpha) * (1 - beta) * image->r[y0 * image->width + x0] +
@@ -560,7 +560,7 @@ ColorImage* pixelizeImageColor(ColorImage* image, int intensity) {
     return result;
 }
 
-// Fonction pour appliquer un effet de négatif sur une image en niveaux de gris
+// Fonction pour appliquer un effet de negatif sur une image en niveaux de gris
 GrayImage* applyNegative(GrayImage* image) {
     GrayImage* result = (GrayImage*)malloc(sizeof(GrayImage));
     result->width = image->width;
@@ -574,7 +574,7 @@ GrayImage* applyNegative(GrayImage* image) {
     return result;
 }
 
-// Fonction pour appliquer un effet de négatif sur une image en couleur
+// Fonction pour appliquer un effet de negatif sur une image en couleur
 ColorImage* applyNegativeColor(ColorImage* image) {
     ColorImage* result = (ColorImage*)malloc(sizeof(ColorImage));
     result->width = image->width;
@@ -631,14 +631,14 @@ ColorImage* adjustContrastColor(ColorImage* image, double intensity) {
     return result;
 }
 
-// Fonction pour ajuster la luminosité d'une image en niveaux de gris
+// Fonction pour ajuster la luminosite d'une image en niveaux de gris
 GrayImage* adjustBrightness(GrayImage* image, int delta) {
     GrayImage* result = (GrayImage*)malloc(sizeof(GrayImage));
     result->width = image->width;
     result->height = image->height;
     result->data = (unsigned char*)malloc(image->width * image->height * sizeof(unsigned char));
 
-    // Appliquer l'ajustement de luminosité pixel par pixel
+    // Appliquer l'ajustement de luminosite pixel par pixel
     for (int i = 0; i < image->width * image->height; ++i) {
         int adjustedValue = image->data[i] + delta;
         result->data[i] = (unsigned char)fmin(fmax(adjustedValue, 0), 255);
@@ -647,7 +647,7 @@ GrayImage* adjustBrightness(GrayImage* image, int delta) {
     return result;
 }
 
-// Fonction pour ajuster la luminosité d'une image en couleur
+// Fonction pour ajuster la luminosite d'une image en couleur
 ColorImage* adjustBrightnessColor(ColorImage* image, int delta) {
     ColorImage* result = (ColorImage*)malloc(sizeof(ColorImage));
     result->width = image->width;
@@ -656,7 +656,7 @@ ColorImage* adjustBrightnessColor(ColorImage* image, int delta) {
     result->g = (unsigned char*)malloc(image->width * image->height * sizeof(unsigned char));
     result->b = (unsigned char*)malloc(image->width * image->height * sizeof(unsigned char));
 
-    // Appliquer l'ajustement de luminosité canal par canal
+    // Appliquer l'ajustement de luminosite canal par canal
     for (int i = 0; i < image->width * image->height; ++i) {
         int adjustedR = image->r[i] + delta;
         int adjustedG = image->g[i] + delta;
@@ -704,7 +704,7 @@ ColorImage* thresholdColor(ColorImage* image, unsigned char threshold) {
     return result;
 }
 
-// Fonction pour mettre à l'échelle une image en niveaux de gris
+// Fonction pour mettre à l'echelle une image en niveaux de gris
 GrayImage* scaleGray(GrayImage* image, float scale) {
     int newWidth = (int)(image->width * scale);
     int newHeight = (int)(image->height * scale);
@@ -716,21 +716,21 @@ GrayImage* scaleGray(GrayImage* image, float scale) {
 
     for (int y = 0; y < newHeight; ++y) {
         for (int x = 0; x < newWidth; ++x) {
-            // Coordonnées dans l'image d'origine
+            // Coordonnees dans l'image d'origine
             float srcX = x / scale;
             float srcY = y / scale;
 
-            // Coordonnées des pixels voisins
+            // Coordonnees des pixels voisins
             int x1 = (int)srcX;
             int y1 = (int)srcY;
             int x2 = fmin(x1 + 1, image->width - 1);
             int y2 = fmin(y1 + 1, image->height - 1);
 
-            // Coefficients pour l'interpolation bilinéaire
+            // Coefficients pour l'interpolation bilineaire
             float dx = srcX - x1;
             float dy = srcY - y1;
 
-            // Interpolation bilinéaire
+            // Interpolation bilineaire
             float interpolatedValue = (1 - dx) * (1 - dy) * image->data[y1 * image->width + x1] +
                                       dx * (1 - dy) * image->data[y1 * image->width + x2] +
                                       (1 - dx) * dy * image->data[y2 * image->width + x1] +
@@ -743,7 +743,7 @@ GrayImage* scaleGray(GrayImage* image, float scale) {
     return result;
 }
 
-// Fonction pour mettre à l'échelle une image en couleur
+// Fonction pour mettre à l'echelle une image en couleur
 ColorImage* scaleColor(ColorImage* image, float scale) {
     int newWidth = (int)(image->width * scale);
     int newHeight = (int)(image->height * scale);
@@ -757,21 +757,21 @@ ColorImage* scaleColor(ColorImage* image, float scale) {
 
     for (int y = 0; y < newHeight; ++y) {
         for (int x = 0; x < newWidth; ++x) {
-            // Coordonnées dans l'image d'origine
+            // Coordonnees dans l'image d'origine
             float srcX = x / scale;
             float srcY = y / scale;
 
-            // Coordonnées des pixels voisins
+            // Coordonnees des pixels voisins
             int x1 = (int)srcX;
             int y1 = (int)srcY;
             int x2 = fmin(x1 + 1, image->width - 1);
             int y2 = fmin(y1 + 1, image->height - 1);
 
-            // Coefficients pour l'interpolation bilinéaire
+            // Coefficients pour l'interpolation bilineaire
             float dx = srcX - x1;
             float dy = srcY - y1;
 
-            // Interpolation bilinéaire pour chaque canal de couleur
+            // Interpolation bilineaire pour chaque canal de couleur
             float interpolatedR = (1 - dx) * (1 - dy) * image->r[y1 * image->width + x1] +
                                   dx * (1 - dy) * image->r[y1 * image->width + x2] +
                                   (1 - dx) * dy * image->r[y2 * image->width + x1] +
