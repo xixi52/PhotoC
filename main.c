@@ -37,7 +37,8 @@ int main() {
         printf("10. Modifier la luminosite\n");
         printf("11. Modifier le seuillage\n");
         printf("12. Modifier l'echelle\n");
-        printf("13. Quitter\n");
+        printf("13. Generer un histogramme\n");
+        printf("14. Quitter\n");
         printf("Entrez votre choix : ");
         scanf("%d", &choice);
 
@@ -74,7 +75,7 @@ int main() {
 
             case 2:
                 if (grayOutputImage == NULL && colorOutputImage == NULL) {
-                    fprintf(stderr, "Aucune image à enregistrer.\n");
+                    fprintf(stderr, "Aucune image a enregistrer.\n");
                 } else {
                     printf("Entrez le nom du fichier de destination : ");
                     scanf("%s", outputFileName);
@@ -158,14 +159,14 @@ int main() {
                 if (grayOutputImage != NULL) {
                     printf("Entrez la direction de la translation (H/B/G/D) : ");
                     scanf(" %c", &direction);
-                    printf("Entrez le nombre de pixels à deplacer : ");
+                    printf("Entrez le nombre de pixels a deplacer : ");
                     scanf("%d", &pixels);
                     grayOutputImage = translateImage(grayOutputImage, direction, pixels);
                     printf("Pixels translater avec succes.\n");
                 } else if (colorOutputImage != NULL) {
                     printf("Entrez la direction de la translation (H/B/G/D) : ");
                     scanf(" %c", &direction);
-                    printf("Entrez le nombre de pixels à deplacer : ");
+                    printf("Entrez le nombre de pixels a deplacer : ");
                     scanf("%d", &pixels);
                     colorOutputImage = translateImageColor(colorOutputImage, direction, pixels);
                     printf("Pixels translater avec succes.\n");
@@ -234,7 +235,7 @@ int main() {
                 break;
 
             case 10:
-                printf("Entrez la valeur d'ajustement de luminosite (-255 à 255) : ");
+                printf("Entrez la valeur d'ajustement de luminosite (-255 a 255) : ");
                 scanf("%d", &brightnessDelta);
 
                 if (brightnessDelta >= -255 && brightnessDelta <= 255) {
@@ -272,7 +273,7 @@ int main() {
                 break;
 
             case 12:
-                // Mise à l'echelle de l'image
+                // Mise a l'echelle de l'image
                 if (grayOutputImage != NULL || colorOutputImage != NULL) {
                     float scale;
                     printf("Entrez le facteur d'agrandissement (entre 1.0 et 5.0) ou de dezoom (entre 0.1 et 1.0) : ");
@@ -293,25 +294,32 @@ int main() {
                             colorOutputImage = scaledImage;
                         }
 
-                        printf("Image mise à l'echelle avec succes.\n");
+                        printf("Image mise a l'echelle avec succes.\n");
                     } else {
-                        fprintf(stderr, "Erreur : Le facteur de mise à l'echelle doit etre entre 1.0 et 5.0 pour l'agrandissement ou entre 0.1 et 1.0 pour le dezoom.\n");
+                        fprintf(stderr, "Erreur : Le facteur de mise a l'echelle doit etre entre 1.0 et 5.0 pour l'agrandissement ou entre 0.1 et 1.0 pour le dezoom.\n");
                     }
                 } else {
-                    fprintf(stderr, "Aucune image chargee pour la mise à l'echelle.\n");
+                    fprintf(stderr, "Aucune image chargee pour la mise a l'echelle.\n");
                 }
                 break;
 
             case 13:
-                // Générer et sauvegarder l'histogramme en noir et blanc
+                // Generer et sauvegarder l'histogramme en noir et blanc
                 if (grayOutputImage != NULL) {
                     char histogramBWFileName[100];
                     printf("Entrez le nom du fichier pour l'histogramme en noir et blanc (sans extension) : ");
                     scanf("%s", histogramBWFileName);
                     strcat(histogramBWFileName, ".pgm");
                     generateHistogramGray(grayOutputImage, histogramBWFileName);
+                } else if (colorOutputImage != NULL) {
+                    char histogramColorFileName[100];
+                    printf("Entrez le nom du fichier pour les histogrammes en couleur (sans extension) : ");
+                    scanf("%s", histogramColorFileName);
+                    generateHistogramRed(colorOutputImage, histogramColorFileName);
+                    generateHistogramGreen(colorOutputImage, histogramColorFileName);
+                    generateHistogramBlue(colorOutputImage, histogramColorFileName);
                 } else {
-                    fprintf(stderr, "Aucune image en niveaux de gris chargée pour générer l'histogramme.\n");
+                    fprintf(stderr, "Aucune image en niveaux de gris chargee pour generer l'histogramme.\n");
                 }
                 break;
 

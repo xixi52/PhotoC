@@ -49,6 +49,9 @@ ColorImage* adjustContrastColor(ColorImage* image, double intensity);
 ColorImage* adjustBrightnessColor(ColorImage* image, int delta);
 ColorImage* thresholdColor(ColorImage* image, unsigned char threshold);
 ColorImage* scaleColor(ColorImage* image, float scale);
+void generateHistogramRed(ColorImage* image, const char* outputFileName);
+void generateHistogramGreen(ColorImage* image, const char* outputFileName);
+void generateHistogramBlue(ColorImage* image, const char* outputFileName);
 
 ImageType detectImageType(const char* filename);
 

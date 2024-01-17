@@ -704,7 +704,7 @@ ColorImage* thresholdColor(ColorImage* image, unsigned char threshold) {
     return result;
 }
 
-// Fonction pour mettre à l'echelle une image en niveaux de gris
+// Fonction pour mettre a l'echelle une image en niveaux de gris
 GrayImage* scaleGray(GrayImage* image, float scale) {
     int newWidth = (int)(image->width * scale);
     int newHeight = (int)(image->height * scale);
@@ -743,7 +743,7 @@ GrayImage* scaleGray(GrayImage* image, float scale) {
     return result;
 }
 
-// Fonction pour mettre à l'echelle une image en couleur
+// Fonction pour mettre a l'echelle une image en couleur
 ColorImage* scaleColor(ColorImage* image, float scale) {
     int newWidth = (int)(image->width * scale);
     int newHeight = (int)(image->height * scale);
@@ -796,17 +796,17 @@ ColorImage* scaleColor(ColorImage* image, float scale) {
     return result;
 }
 
-// Fonction pour générer un histogramme en noir et blanc et sauvegarder en fichier PGM
+// Fonction pour generer un histogramme en noir et blanc et sauvegarder en fichier PGM
 void generateHistogramGray(GrayImage* image, const char* outputFileName) {
     FILE* file = fopen(outputFileName, "w");
     if (!file) {
-        fprintf(stderr, "Erreur lors de la création du fichier PGM pour l'histogramme.\n");
+        fprintf(stderr, "Erreur lors de la creation du fichier PGM pour l'histogramme.\n");
         return;
     }
 
     fprintf(file, "P2\n");
     fprintf(file, "256 256\n"); // Taille de l'histogramme
-    fprintf(file, "255\n"); // Valeur maximale d'intensité
+    fprintf(file, "255\n"); // Valeur maximale d'intensite
 
     // Calculer l'histogramme
     int pixels[256] = {0};
@@ -838,6 +838,145 @@ void generateHistogramGray(GrayImage* image, const char* outputFileName) {
     fclose(file);
     printf("Histogramme en noir et blanc genere avec succes.\n");
 }
+
+// Fonction pour generer un histogramme rouge en ppm
+void generateHistogramRed(ColorImage* image, const char* outputFileName) {
+    char outputFileNameRed[256];  // ou une taille appropriee
+    snprintf(outputFileNameRed, sizeof(outputFileNameRed), "%s_red.ppm", outputFileName);
+
+    FILE* file = fopen(outputFileNameRed, "w");
+    if (!file) {
+        fprintf(stderr, "Erreur lors de la creation du fichier PPM pour l'histogramme rouge.\n");
+        return;
+    }
+
+    fprintf(file, "P3\n");
+    fprintf(file, "256 256\n"); // Taille de l'histogramme
+    fprintf(file, "255\n"); // Valeur maximale d'intensite
+
+    // Calculer l'histogramme rouge
+    int pixels[256] = {0};
+    for (int i = 0; i < image->width * image->height; ++i) {
+        pixels[image->r[i]]++;
+    }
+
+    // Trouver la valeur maximale de l'histogramme
+    int maxFrequency = 0;
+    for (int i = 0; i < 256; ++i) {
+        if (pixels[i] > maxFrequency) {
+            maxFrequency = pixels[i];
+        }
+    }
+
+    // Normaliser et ecrire l'histogramme dans le fichier PPM
+    for (int j = 0; j < 256; ++j) {
+        for (int i = 0; i <= 255; ++i) {
+            int normalizedHeight = (pixels[i] * 255) / maxFrequency;
+            if (j >= 255 - normalizedHeight) {
+                fprintf(file, "255 0 0 ");  // Rouge
+            } else {
+                fprintf(file, "255 255 255 ");  // Fond blanc
+            }
+        }
+        fprintf(file, "\n");
+    }
+
+    fclose(file);
+    printf("Histogramme rouge genere avec succes.\n");
+}
+
+// Fonction pour generer un histogramme bleu en ppm
+void generateHistogramBlue(ColorImage* image, const char* outputFileName) {
+    char outputFileNameBlue[256];
+    snprintf(outputFileNameBlue, sizeof(outputFileNameBlue), "%s_blue.ppm", outputFileName);
+
+    FILE* file = fopen(outputFileNameBlue, "w");
+    if (!file) {
+        fprintf(stderr, "Erreur lors de la creation du fichier PPM pour l'histogramme bleu.\n");
+        return;
+    }
+
+    fprintf(file, "P3\n");
+    fprintf(file, "256 256\n"); // Taille de l'histogramme
+    fprintf(file, "255\n"); // Valeur maximale d'intensite
+
+    // Calculer l'histogramme bleu
+    int pixels[256] = {0};
+    for (int i = 0; i < image->width * image->height; ++i) {
+        pixels[image->b[i]]++;
+    }
+
+    // Trouver la valeur maximale de l'histogramme
+    int maxFrequency = 0;
+    for (int i = 0; i < 256; ++i) {
+        if (pixels[i] > maxFrequency) {
+            maxFrequency = pixels[i];
+        }
+    }
+
+    // Normaliser et ecrire l'histogramme dans le fichier PPM
+    for (int j = 0; j < 256; ++j) {
+        for (int i = 0; i <= 255; ++i) {
+            int normalizedHeight = (pixels[i] * 255) / maxFrequency;
+            if (j >= 255 - normalizedHeight) {
+                fprintf(file, "0 0 255 ");  // Bleu
+            } else {
+                fprintf(file, "255 255 255 ");  // Fond blanc
+            }
+        }
+        fprintf(file, "\n");
+    }
+
+    fclose(file);
+    printf("Histogramme bleu genere avec succes.\n");
+}
+
+// Fonction pour generer un histogramme vert en ppm
+void generateHistogramGreen(ColorImage* image, const char* outputFileName) {
+    char outputFileNameGreen[256];
+    snprintf(outputFileNameGreen, sizeof(outputFileNameGreen), "%s_green.ppm", outputFileName);
+
+    FILE* file = fopen(outputFileNameGreen, "w");
+    if (!file) {
+        fprintf(stderr, "Erreur lors de la creation du fichier PPM pour l'histogramme vert.\n");
+        return;
+    }
+
+    fprintf(file, "P3\n");
+    fprintf(file, "256 256\n"); // Taille de l'histogramme
+    fprintf(file, "255\n"); // Valeur maximale d'intensite
+
+    // Calculer l'histogramme vert
+    int pixels[256] = {0};
+    for (int i = 0; i < image->width * image->height; ++i) {
+        pixels[image->g[i]]++;
+    }
+
+    // Trouver la valeur maximale de l'histogramme
+    int maxFrequency = 0;
+    for (int i = 0; i < 256; ++i) {
+        if (pixels[i] > maxFrequency) {
+            maxFrequency = pixels[i];
+        }
+    }
+
+    // Normaliser et ecrire l'histogramme dans le fichier PPM
+    for (int j = 0; j < 256; ++j) {
+        for (int i = 0; i <= 255; ++i) {
+            int normalizedHeight = (pixels[i] * 255) / maxFrequency;
+            if (j >= 255 - normalizedHeight) {
+                fprintf(file, "0 255 0 ");  // Vert
+            } else {
+                fprintf(file, "255 255 255 ");  // Fond blanc
+            }
+        }
+        fprintf(file, "\n");
+    }
+
+    fclose(file);
+    printf("Histogramme vert genere avec succes.\n");
+}
+
 
 
 
